@@ -5,7 +5,26 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "cd server && npm run lint && cd ../",
+    "lint:fix": "cd server && npm run lint:fix",
+    "format": "cd server && npm run format && cd ../"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.*": [
+      "npm run lint",
+      "npm run format"
+    ]
+  },
   "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.0",
     "prettier": "^2.8.4"
   }
 }

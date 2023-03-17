@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
+import { config } from 'dotenv';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database.module';
-import { config } from 'dotenv';
-import { UsersModule } from './users/users.module';
-import { TemplatesModule } from './templates/templates.module';
+import { TemplatesModule } from './module/templates/templates.module';
+import { UsersModule } from './module/users/users.module';
 
 config();
 

@@ -1,10 +1,10 @@
-import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
-import { User } from './src/users/user.entity';
-import { Template } from './src/templates/template.entity';
-import { CreateUserTable1678998040775 } from './migrations/1678998040775-CreateUserTable';
-import { CreateTemplateTable1678998082380 } from './migrations/1678998082380-CreateTemplateTable';
+import { DataSource } from 'typeorm';
+import { CreateUserTable1678998040775 } from './migration/1678998040775-CreateUserTable';
+import { CreateTemplateTable1678998082380 } from './migration/1678998082380-CreateTemplateTable';
+import { Template } from './module/templates/template.entity';
+import { User } from './module/users/user.entity';
 
 config();
 
