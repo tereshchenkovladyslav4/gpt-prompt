@@ -24,6 +24,7 @@
       "@components": ["src/app/components/index"],
       "@env/*": ["src/environments/*"],
       "@enums": ["src/app/core/enums/index"],
+      "@interceptors": ["src/app/core/interceptors/index"],
       "@models": ["src/app/core/models/index"],
       "@modules/*": ["src/app/modules/*"],
       "@services": ["src/app/core/services/index"],
