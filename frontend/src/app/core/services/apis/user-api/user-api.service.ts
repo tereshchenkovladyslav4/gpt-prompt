@@ -12,4 +12,12 @@ export class UserApiService {
   signup(data: any): Observable<ApiResponse<UserInfo>> {
     return this.apiService.post('user', data);
   }
+
+  userLogin(data: any): Observable<ApiResponse<string>> {
+    return this.apiService.post('user/login', data);
+  }
+
+  forgotPassword(data: any): Observable<ApiResponse<string>> {
+    return this.apiService.post('user', data);
+  }
 }

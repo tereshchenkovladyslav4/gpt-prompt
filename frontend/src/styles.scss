@@ -9,27 +9,11 @@
 
 @import 'theme/styles/base';
 @import 'theme/styles/libs-override';
+@import 'theme/styles/common';
 
 body,
 .mat-drawer-container {
   background-color: #f4f4f4;
-}
-div.avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-
-  button {
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.display-none {
-  display: none !important;
 }
 
 .tab-nav-wrap {
@@ -51,45 +35,6 @@ div.avatar {
   }
 }
 
-.center-align {
-  padding: 0.5rem;
-  justify-content: center;
-  display: flex;
-}
-
-.main-border {
-  border: solid 1px rgb(240, 240, 240);
-  border-radius: 4px;
-}
-
-.margin-right-1rem {
-  margin-right: 1rem;
-}
-
-.margin-left-1rem {
-  margin-left: 1rem;
-}
-
-.margin-left-3rem {
-  margin-left: 3rem;
-}
-
-.margin-top-1rem {
-  margin-top: 1rem;
-}
-
-.padding-05rem {
-  padding: 0.5rem;
-}
-
-.padding-1rem {
-  padding: 1rem;
-}
-
-.margin-1rem {
-  margin: 1rem;
-}
-
 .mat-form-field.no-padding > .mat-form-field-wrapper {
   margin-bottom: -1.25em;
   //margin-top: -0.25em;
@@ -99,72 +44,15 @@ div.avatar {
   margin: 0;
 }
 
-.no-hover-effect.mat-button.mat-primary .mat-button-focus-overlay,
-.no-hover-effect.mat-button.mat-accent .mat-button-focus-overlay,
-.no-hover-effect.mat-button.mat-warn .mat-button-focus-overlay {
-  background-color: transparent;
-}
-
-.margin-bottom-1rem {
-  margin-bottom: 1rem;
-}
-
-.margin-bottom-05rem {
-  margin-bottom: 0.5rem;
-}
-
 .text-block-wrap {
   width: 100%;
   text-align: justify;
   overflow-wrap: break-word;
 }
 
-@media (max-width: 599px) {
-  .mat-calendar {
-    zoom: 0.8;
-  }
-
-  .container {
-    padding-right: 0.5rem !important;
-    padding-left: 0.5rem !important;
-  }
-
-  .mobile-display-none {
-    display: none !important;
-  }
-}
-
 mat-dialog-content {
   max-height: unset !important;
   overflow: unset !important;
-}
-
-.opecity {
-  opacity: 0.3;
-}
-
-.hidden {
-  visibility: hidden;
-}
-
-.cropped-img {
-  border-radius: 5px;
-  width: 240px !important;
-}
-
-.round {
-  border-radius: 50%;
-}
-
-.avatar-image {
-  width: 50px;
-  margin-right: 1rem;
-}
-
-@media (max-width: 599px) {
-  .avatar-image {
-    margin-right: 0.5rem;
-  }
 }
 
 // For page scroll

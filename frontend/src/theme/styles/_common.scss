@@ -1,0 +1,5 @@
+.no-hover-effect.mdc-button.mat-primary .mat-mdc-button-persistent-ripple::before,
+.no-hover-effect.mdc-button.mat-accent.mat-mdc-button-persistent-ripple::before,
+.no-hover-effect.mdc-button.mat-warn .mat-mdc-button-persistent-ripple::before {
+  background-color: transparent;
+}
