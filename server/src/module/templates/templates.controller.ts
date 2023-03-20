@@ -32,11 +32,13 @@ export class TemplatesController {
 
   @Get()
   @UseGuards(AuthGuard)
-  async getTemplates(@Query() query: Filter): Promise<ApiResponse<Pagination<Template>>> {
+  async getTemplates(@Query() query: Filter, @Req() req: any): Promise<ApiResponse<Pagination<Template>>> {
+    const { userId } = req;
+
     return {
       success: true,
       statusCode: HttpStatus.OK,
-      result: await this.templatesService.get(query),
+      result: await this.templatesService.get(userId, query),
     };
   }
 

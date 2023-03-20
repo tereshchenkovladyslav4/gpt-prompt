@@ -16,9 +16,9 @@ export class TemplatesService {
     return await this.templatesRepository.save(data);
   }
 
-  async get(filter: Filter): Promise<Pagination<Template>> {
-    const qb = await this.templatesRepository.createQueryBuilder('Template');
+  async get(userId: number, filter: Filter): Promise<Pagination<Template>> {
     const { pageSize, pageIndex } = filter;
+    const qb = await this.templatesRepository.createQueryBuilder('Template').where({ userId: userId });
     if (pageSize != undefined) {
       qb.take(pageSize);
     }
