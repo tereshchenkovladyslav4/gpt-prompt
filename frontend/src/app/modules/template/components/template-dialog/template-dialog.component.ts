@@ -25,6 +25,7 @@ export class TemplateDialogComponent implements OnInit {
     public data: DialogData<Template>,
   ) {
     this.infoForm = this.fb.group({
+      id: this.data.data?.id,
       title: [this.data.data?.title || '', [Validators.required, this.formValidationService.isBlank]],
       content: [
         this.data.data?.content || '',
@@ -42,7 +43,7 @@ export class TemplateDialogComponent implements OnInit {
   submitForm() {
     if (this.infoForm.valid) {
       this.submitted = true;
-      this.templateApiService.createTemplate(this.infoForm.value).subscribe((res) => {
+      this.templateApiService.saveTemplate(this.infoForm.value).subscribe((res) => {
         if (!res.success) {
           this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
           return;

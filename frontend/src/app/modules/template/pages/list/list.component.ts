@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, DialogService } from '@services';
+import { AuthService, DialogService, TemplateApiService } from '@services';
 import { Router } from '@angular/router';
 import { TemplateDialogComponent } from '@modules/template/components/template-dialog/template-dialog.component';
 import { DialogType } from '@enums';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Template } from '@models';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-list',
@@ -10,11 +13,43 @@ import { DialogType } from '@enums';
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
-  constructor(private authService: AuthService, private dialogService: DialogService, private router: Router) {}
+  templates: Template[] = [];
+  public totalCount: number = 1;
+  public pageIndex: number = 0;
+  public pageSize: number = 10;
 
-  ngOnInit() {}
+  constructor(
+    private authService: AuthService,
+    private dialogService: DialogService,
+    private router: Router,
+    private templateApiService: TemplateApiService,
+    private snackBar: MatSnackBar,
+  ) {}
 
-  openTemplateDialog() {
+  ngOnInit() {
+    this.getTemplates();
+  }
+
+  getTemplates(event?: PageEvent) {
+    if (event) {
+      this.pageSize = event.pageSize;
+      this.pageIndex = event.pageIndex;
+    }
+    this.templateApiService.getTemplates({ pageIndex: this.pageIndex, pageSize: this.pageSize }).subscribe((res) => {
+      if (!res.success) {
+        this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
+        return;
+      }
+      this.templates = res.result?.data || [];
+      // this.totalCount = Math.ceil((res.result?.totalCount || 0) / this.pageSize);
+      this.totalCount = res.result?.totalCount || 0;
+      if (this.totalCount <= this.pageSize * this.pageIndex) {
+        this.pageIndex = 0;
+      }
+    });
+  }
+
+  openTemplateDialog(template?: Template) {
     if (!this.authService.isAuthenticated()) {
       this.router.navigateByUrl('/login');
       return;
@@ -22,10 +57,12 @@ export class ListComponent implements OnInit {
 
     this.dialogService
       .open(TemplateDialogComponent, {
-        data: { dialogType: DialogType.TEMPLATE },
+        data: { dialogType: DialogType.TEMPLATE, data: template },
         width: '800px',
       })
       .afterClosed()
-      .subscribe((res) => {});
+      .subscribe((res) => {
+        this.getTemplates();
+      });
   }
 }

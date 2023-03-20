@@ -1,3 +1,24 @@
 <div class="search-box-wrap" fxLayout="row wrap" fxLayoutAlign="end center">
   <button (click)="openTemplateDialog()" mat-raised-button color="accent">+Add Template</button>
 </div>
+
+<div class="bg-white mt-3 p-3">
+  <div *ngFor="let template of templates" class="template-wrap" fxLayout="row wrap" fxLayoutAlign="space-between start">
+    <div>
+      <div class="title mb-2">{{ template.title }}</div>
+      <div class="mute-text">{{ template.content }}</div>
+    </div>
+    <div fxLayout="row wrap" fxLayoutAlign="start center">
+      <button mat-icon-button (click)="openTemplateDialog(template)"><mat-icon>edit</mat-icon></button>
+    </div>
+  </div>
+</div>
+<mat-paginator
+  #paginator
+  [pageSize]="pageSize"
+  [length]="totalCount"
+  [pageIndex]="pageIndex"
+  [pageSizeOptions]="[5, 10, 20]"
+  (page)="getTemplates($event)"
+>
+</mat-paginator>

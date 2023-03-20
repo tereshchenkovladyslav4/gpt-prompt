@@ -27,10 +27,12 @@ div.avatar {
 
 .app-content-wrap {
   padding-top: calc($header-desktop-height + $desktop-page-pt);
+  padding-bottom: $desktop-page-pb;
   flex: 1 0 auto;
 
   @media (max-width: 767px) {
     padding-top: calc($header-mobile-height + $mobile-page-pt);
+    padding-bottom: $mobile-page-pb;
   }
 }
 

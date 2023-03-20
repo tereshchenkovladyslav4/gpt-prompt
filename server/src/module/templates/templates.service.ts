@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Filter, Pagination } from '@models';
 import { Repository } from 'typeorm';
-import { CreateTemplateDto } from './dto/createTemplate.dto';
+import { SaveTemplateDto } from './dto/save-template.dto';
 import { Template } from './template.entity';
 
 @Injectable()
@@ -11,8 +12,27 @@ export class TemplatesService {
     private templatesRepository: Repository<Template>,
   ) {}
 
-  async create(data: CreateTemplateDto) {
+  async save(data: SaveTemplateDto) {
     return await this.templatesRepository.save(data);
+  }
+
+  async get(filter: Filter): Promise<Pagination<Template>> {
+    const qb = await this.templatesRepository.createQueryBuilder('Template');
+    const { pageSize, pageIndex } = filter;
+    if (pageSize != undefined) {
+      qb.take(pageSize);
+    }
+    if (pageIndex != undefined && pageSize != undefined) {
+      qb.skip(pageSize * pageIndex);
+    }
+    const [data, totalCount] = await qb.getManyAndCount();
+    const result = {
+      pageIndex: pageIndex,
+      pageSize: pageSize,
+      totalCount: totalCount,
+      data: data,
+    };
+    return result;
   }
 
   async read(id: number) {
