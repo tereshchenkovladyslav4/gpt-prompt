@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as crypto from 'crypto';
@@ -11,6 +12,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private jwtService: JwtService,
   ) {}
 
   encryptPassword(password: string) {
@@ -27,5 +29,22 @@ export class UsersService {
 
   async getByEmail(email: string) {
     return await this.usersRepository.findOne({ where: { email: email } });
+  }
+
+  async validateUser(username: string, password: string): Promise<any> {
+    const user = await this.getByEmail(username);
+    if (user && user.password === this.encryptPassword(password)) {
+      if (user.active) {
+        delete user.password;
+        return user;
+      }
+    }
+    return null;
+  }
+
+  async login(user: User) {
+    delete user.password;
+    const payload = { user: user };
+    return this.jwtService.sign(payload, { expiresIn: '1 day' });
   }
 }

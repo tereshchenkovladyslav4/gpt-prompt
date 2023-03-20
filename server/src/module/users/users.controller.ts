@@ -1,6 +1,7 @@
 import { Controller, Get, Param, HttpStatus, Post, Body } from '@nestjs/common';
 import { ApiResponse } from '@models';
 import { CreateUserDto } from './dto/createUser.dto';
+import { LoginDto } from './dto/login.dto';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
 
@@ -30,7 +31,37 @@ export class UsersController {
       return {
         success: false,
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: err.message,
+        message: [err.message],
+      };
+    }
+  }
+
+  @Post('login')
+  async login(@Body() data: LoginDto): Promise<ApiResponse<string>> {
+    try {
+      const user = await this.usersService.validateUser(data.username, data.password);
+
+      if (!user) {
+        return {
+          success: false,
+          statusCode: HttpStatus.UNAUTHORIZED,
+          message: ['Invalid email or password'],
+        };
+      }
+
+      const token = await this.usersService.login(user);
+
+      return {
+        success: true,
+        statusCode: HttpStatus.OK,
+        message: ['Logged in successfully'],
+        result: token,
+      };
+    } catch (err) {
+      return {
+        success: false,
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: [err.message],
       };
     }
   }
