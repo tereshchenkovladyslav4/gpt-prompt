@@ -3,6 +3,7 @@ import { config } from 'dotenv';
 import { DataSource } from 'typeorm';
 import { CreateUserTable1678998040775 } from './migration/1678998040775-CreateUserTable';
 import { CreateTemplateTable1678998082380 } from './migration/1678998082380-CreateTemplateTable';
+import { UpdateUserTable1679279658988 } from './migration/1679279658988-UpdateUserTable';
 import { Template } from './module/templates/template.entity';
 import { User } from './module/users/user.entity';
 
@@ -18,5 +19,5 @@ export default new DataSource({
   password: configService.get('DB_PASS'),
   database: configService.get('DB_NAME'),
   entities: [User, Template],
-  migrations: [CreateUserTable1678998040775, CreateTemplateTable1678998082380],
+  migrations: [CreateUserTable1678998040775, CreateTemplateTable1678998082380, UpdateUserTable1679279658988],
 });
