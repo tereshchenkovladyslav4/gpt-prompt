@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService, CommonService, FormValidationService } from '@services';
+import { AuthService, CommonService, FormValidationService, UserApiService } from '@services';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { UserApiService } from '../../core/services/apis/user-api/user-api.service';
 
 @Component({
   selector: 'app-login',

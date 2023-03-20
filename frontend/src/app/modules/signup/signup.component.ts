@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CommonService, DialogService, FormValidationService } from '@services';
+import { CommonService, DialogService, FormValidationService, UserApiService } from '@services';
 import { AlertDialogComponent } from '@shared';
-import { UserApiService } from '../../core/services/apis/user-api/user-api.service';
 import { DialogType } from '@enums';
 
 @Component({

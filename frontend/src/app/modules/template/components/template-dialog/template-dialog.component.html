@@ -1,0 +1,33 @@
+<form class="p-4 pb-2" [formGroup]="infoForm" (ngSubmit)="submitForm()" autocomplete="off" novalidate>
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <h2 mat-dialog-title>Add Template</h2>
+    <button mat-icon-button mat-dialog-close tabindex="-1"><mat-icon>close</mat-icon></button>
+  </div>
+
+  <mat-dialog-content fxLayout="column">
+    <mat-form-field appearance="outline">
+      <mat-label>Title</mat-label>
+      <input type="text" matInput formControlName="title" required />
+      <mat-error *ngIf="checkError(infoForm, 'title', ['required', 'blank'])"> Required. </mat-error>
+      <mat-error
+        *ngIf="checkError(infoForm, 'title', 'title') && !checkError(infoForm, 'email', ['required', 'blank'])"
+      >
+        Required.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Content</mat-label>
+      <textarea rows="5" type="text" matInput formControlName="content" required></textarea>
+      <mat-hint align="end">{{ infoForm.get('content')?.value.length }} / 500</mat-hint>
+      <mat-error *ngIf="checkError(infoForm, 'content', ['required', 'blank'])"> Required. </mat-error>
+      <mat-error *ngIf="checkError(infoForm, 'content', 'maxlength')">
+        Content has a maximum length of 500 characters.
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+    <button mat-raised-button mat-dialog-close tabindex="-1">Cancel</button>
+    <button mat-raised-button color="accent" [disabled]="infoForm.invalid || submitted" type="submit">Submit</button>
+  </mat-dialog-actions>
+</form>

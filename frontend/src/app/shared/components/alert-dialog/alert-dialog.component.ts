@@ -11,7 +11,10 @@ import { DialogType } from '@enums';
 export class AlertDialogComponent implements OnInit {
   readonly DialogType = DialogType;
 
-  constructor(public dialogRef: MatDialogRef<AlertDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+  constructor(
+    public dialogRef: MatDialogRef<AlertDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData<undefined>,
+  ) {}
 
   ngOnInit() {}
 
