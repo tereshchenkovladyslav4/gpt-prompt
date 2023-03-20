@@ -19,7 +19,8 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@enums": ["src/core/enums/index"],
-      "@models": ["src/core/models/index"]
+      "@guards": ["src/guards/index"],
+      "@models": ["src/core/models/index"],
     }
   },
   "include": ["src/**/*"]

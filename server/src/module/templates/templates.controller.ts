@@ -1,4 +1,5 @@
-import { Controller, Get, Param, HttpStatus, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, HttpStatus, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { AuthGuard } from '@guards';
 import { ApiResponse } from '@models';
 import { CreateTemplateDto } from './dto/createTemplate.dto';
 import { Template } from './template.entity';
@@ -9,13 +10,16 @@ export class TemplatesController {
   constructor(private templatesService: TemplatesService) {}
 
   @Post()
-  async createTemplate(@Body() data: CreateTemplateDto): Promise<ApiResponse<Template>> {
+  @UseGuards(AuthGuard)
+  async createTemplate(@Body() data: CreateTemplateDto, @Req() req: any): Promise<ApiResponse<Template>> {
     try {
+      const { userId } = req;
+
       return {
         success: true,
         statusCode: HttpStatus.OK,
         message: ['Template added successfully'],
-        result: await this.templatesService.create(data),
+        result: await this.templatesService.create({ ...data, userId: userId }),
       };
     } catch (err) {
       return {

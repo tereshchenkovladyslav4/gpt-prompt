@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Template } from '../templates/template.entity';
 
 @Entity()
 export class User {
@@ -20,4 +21,7 @@ export class User {
 
   @Column('tinyint', { default: true })
   active: boolean;
+
+  @OneToMany(() => Template, (template) => template.user)
+  templates: Template[];
 }
