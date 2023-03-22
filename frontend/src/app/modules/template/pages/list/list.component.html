@@ -9,6 +9,7 @@
       <div class="mute-text">{{ template.content }}</div>
     </div>
     <div fxLayout="row wrap" fxLayoutAlign="start center">
+      <button mat-icon-button routerLink="/{{ template.id }}"><mat-icon>chat</mat-icon></button>
       <button mat-icon-button (click)="openTemplateDialog(template)"><mat-icon>edit</mat-icon></button>
     </div>
   </div>

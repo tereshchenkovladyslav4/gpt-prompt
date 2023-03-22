@@ -1,6 +1,7 @@
 import { Controller, Get, Param, HttpStatus, Post, Body, UseGuards, Req, Query } from '@nestjs/common';
 import { AuthGuard } from '@guards';
 import { ApiResponse, Filter, Pagination } from '@models';
+import { GetAnswerDto } from './dto/get-answer.dto';
 import { SaveTemplateDto } from './dto/save-template.dto';
 import { Template } from './template.entity';
 import { TemplatesService } from './templates.service';
@@ -48,6 +49,16 @@ export class TemplatesController {
       success: true,
       statusCode: HttpStatus.OK,
       result: await this.templatesService.read(id),
+    };
+  }
+
+  @Post('answer')
+  async getAnswer(@Body() data: GetAnswerDto): Promise<ApiResponse<string>> {
+    const { inputString } = data;
+    return {
+      success: true,
+      statusCode: HttpStatus.OK,
+      result: `This is the answer of ${inputString}`,
     };
   }
 }

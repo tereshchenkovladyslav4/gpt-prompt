@@ -1,1 +1,27 @@
-<p>detail works!</p>
+<form *ngIf="template" [formGroup]="infoForm" (ngSubmit)="submitForm()" autocomplete="off" novalidate>
+  <h2>{{ template.title }}</h2>
+
+  <div class="bg-white mt-3 p-3">
+    {{ template.content }}
+  </div>
+  <div class="bg-white mt-3 p-3" [formGroup]="infoForm">
+    <ng-container *ngFor="let item of contents; let index = index">
+      <span *ngIf="item.type == ContentType.STRING">{{ item.title }}</span>
+
+      <mat-form-field *ngIf="item.type == ContentType.KEYWORD">
+        <mat-label>{{ item.title }}</mat-label>
+        <input type="text" matInput [formControlName]="index" required />
+        <mat-error *ngIf="checkError(infoForm, '' + index, ['required', 'blank'])">Required.</mat-error>
+      </mat-form-field>
+    </ng-container>
+  </div>
+
+  <div *ngIf="responseAnswer" class="bg-white mt-3 p-3">
+    {{ responseAnswer }}
+  </div>
+
+  <div fxLayout="row wrap" fxLayoutAlign="end center" class="mt-4">
+    <button mat-raised-button routerLink="/" class="me-4">Cancel</button>
+    <button mat-raised-button color="accent" [disabled]="submitted" type="submit">Generate Response</button>
+  </div>
+</form>
