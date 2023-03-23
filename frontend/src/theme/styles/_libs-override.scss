@@ -17,7 +17,7 @@
   transition: background-color 0.2s linear, opacity 0.2s linear;
   -webkit-transition: background-color 0.2s linear, opacity 0.2s linear;
   height: 7px;
-  bottom: 0px;
+  bottom: 0;
   position: absolute;
 }
 
@@ -27,7 +27,7 @@
   transition: background-color 0.2s linear, opacity 0.2s linear;
   -webkit-transition: background-color 0.2s linear, opacity 0.2s linear;
   width: 7px;
-  right: 0px;
+  right: 0;
   position: absolute;
 }
 

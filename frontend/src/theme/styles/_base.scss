@@ -174,13 +174,6 @@ a {
   margin: 0 8px !important;
 }
 
-.draggable {
-  cursor: move;
-  cursor: grab;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
-}
-
 .logo {
   text-decoration: none;
   font-size: 24px;
@@ -349,21 +342,21 @@ mat-card.no-content {
 }
 
 p {
-  margin: 0px;
+  margin: 0;
 }
 
 h4 {
-  margin: 0px;
+  margin: 0;
   font-size: 18px;
   font-weight: 600;
 }
 h3 {
-  margin: 10px 0px;
+  margin: 10px 0;
   font-size: 19px;
   font-weight: 600;
 }
 h2 {
-  margin: 16px 0px;
+  margin: 16px 0;
   font-size: 20px;
   font-weight: 700;
 }
@@ -421,7 +414,7 @@ h6 {
     }
     .box-text {
       margin-bottom: 10px;
-      &::last-child {
+      &:last-child {
         margin-bottom: 15px;
       }
     }
