@@ -3,12 +3,13 @@ import { config } from 'dotenv';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database.module';
+import { OpenAiModule } from './module/open-ai/open-ai.module';
 import { TemplatesModule } from './module/templates/templates.module';
 import { UsersModule } from './module/users/users.module';
 
 config();
 
-const MODULES = [UsersModule, TemplatesModule];
+const MODULES = [UsersModule, TemplatesModule, OpenAiModule];
 
 @Module({
   imports: [DatabaseModule, ...MODULES],
