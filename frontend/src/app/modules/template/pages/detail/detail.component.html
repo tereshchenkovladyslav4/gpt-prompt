@@ -5,15 +5,13 @@
     {{ template.content }}
   </div>
   <div class="bg-white mt-3 p-3" [formGroup]="infoForm">
-    <ng-container *ngFor="let item of contents; let index = index">
-      <span *ngIf="item.type == ContentType.STRING">{{ item.title }}</span>
-
+    <div *ngFor="let item of contents; let index = index">
       <mat-form-field *ngIf="item.type == ContentType.KEYWORD">
         <mat-label>{{ item.title }}</mat-label>
         <input type="text" matInput [formControlName]="index" required />
         <mat-error *ngIf="checkError(infoForm, '' + index, ['required', 'blank'])">Required.</mat-error>
       </mat-form-field>
-    </ng-container>
+    </div>
   </div>
 
   <div *ngIf="responseAnswer" class="bg-white mt-3 p-3">
