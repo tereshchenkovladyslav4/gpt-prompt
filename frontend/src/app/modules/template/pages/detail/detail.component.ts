@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ContentEdit, Template } from '@models';
 import { FormValidationService, OpenaiApiService, TemplateApiService } from '@services';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContentType } from '@enums';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
@@ -19,10 +21,12 @@ export class DetailComponent implements OnInit {
   infoForm: FormGroup;
   submitted: boolean = false;
   responseAnswer: string = '';
+  initialParams: { [key: string]: string } = {};
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private router: Router,
     private snackBar: MatSnackBar,
     private templateApiService: TemplateApiService,
     private openaiApiService: OpenaiApiService,
@@ -38,10 +42,29 @@ export class DetailComponent implements OnInit {
         if (id) this.getTemplate(id);
       }
     });
+
+    this.initialParams = this.route.snapshot.queryParams;
   }
 
   checkError(form: FormGroup, field: string, error: string | string[]) {
     return this.formValidationService.checkError(form, field, error);
+  }
+
+  syncQueryParams() {
+    this.infoForm.valueChanges.pipe(untilDestroyed(this)).subscribe((values: { [key: number]: string }) => {
+      const params: { [key: string]: string } = {};
+      Object.entries(values).forEach(([key, val]) => {
+        const placeholder = this.contents[+key]?.title;
+        if (placeholder && val) {
+          params[placeholder] = val;
+        }
+      });
+
+      this.router.navigate([`/${this.template?.id}`], {
+        queryParams: params,
+        queryParamsHandling: 'merge',
+      });
+    });
   }
 
   private getTemplate(id: number) {
@@ -54,6 +77,7 @@ export class DetailComponent implements OnInit {
         this.template = res.result;
         let contentStr = this.template?.content || '';
         this.contents = [];
+        this.infoForm = this.fb.group({});
 
         let index = 0;
         while (1) {
@@ -81,9 +105,14 @@ export class DetailComponent implements OnInit {
               type: ContentType.KEYWORD,
             });
 
-            this.infoForm.addControl(`${index++}`, new FormControl('', [Validators.required]));
+            this.infoForm.addControl(
+              `${index++}`,
+              new FormControl(this.initialParams[matches[3]] || '', [Validators.required]),
+            );
           }
         }
+
+        this.syncQueryParams();
       },
       (err: HttpErrorResponse) => {
         this.snackBar.open(err.message || '', 'Dismiss', { duration: 4000 });
