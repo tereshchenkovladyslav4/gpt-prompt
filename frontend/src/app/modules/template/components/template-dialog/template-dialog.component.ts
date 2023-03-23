@@ -42,22 +42,24 @@ export class TemplateDialogComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.infoForm.valid) {
-      this.submitted = true;
-      this.templateApiService.saveTemplate(this.infoForm.value).subscribe(
-        (res) => {
-          if (!res.success) {
-            this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
-            return;
-          }
-          this.submitted = false;
-          this.dialogRef.close(res.result);
-        },
-        (err: HttpErrorResponse) => {
-          this.submitted = false;
-          this.snackBar.open(err.message || '', 'Dismiss', { duration: 4000 });
-        },
-      );
+    if (!this.infoForm.valid) {
+      this.infoForm.markAllAsTouched();
+      return;
     }
+    this.submitted = true;
+    this.templateApiService.saveTemplate(this.infoForm.value).subscribe(
+      (res) => {
+        if (!res.success) {
+          this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
+          return;
+        }
+        this.submitted = false;
+        this.dialogRef.close(res.result);
+      },
+      (err: HttpErrorResponse) => {
+        this.submitted = false;
+        this.snackBar.open(err.message || '', 'Dismiss', { duration: 4000 });
+      },
+    );
   }
 }

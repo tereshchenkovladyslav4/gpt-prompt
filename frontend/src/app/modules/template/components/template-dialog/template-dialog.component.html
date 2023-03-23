@@ -18,6 +18,10 @@
     <mat-form-field appearance="outline">
       <mat-label>Content</mat-label>
       <textarea rows="5" type="text" matInput formControlName="content" required></textarea>
+      <mat-hint align="start"
+        >The placeholder should be enclosed in double curly braces. For example, {{ '{' }}{{ '{' }}topic{{ '}'
+        }}{{ '}' }}</mat-hint
+      >
       <mat-hint align="end">{{ infoForm.get('content')?.value.length }} / 500</mat-hint>
       <mat-error *ngIf="checkError(infoForm, 'content', ['required', 'blank'])"> Required. </mat-error>
       <mat-error *ngIf="checkError(infoForm, 'content', 'maxlength')">
@@ -28,6 +32,6 @@
 
   <mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
     <button mat-raised-button mat-dialog-close tabindex="-1">Cancel</button>
-    <button mat-raised-button color="accent" [disabled]="infoForm.invalid || submitted" type="submit">Submit</button>
+    <button mat-raised-button color="accent" [disabled]="submitted" type="submit">Submit</button>
   </mat-dialog-actions>
 </form>
