@@ -81,7 +81,7 @@ export class DetailComponent implements OnInit {
 
         let index = 0;
         while (1) {
-          const matches = /([^[]*.)(\[([A-Za-z0-9 _-]*)\])/g.exec(contentStr);
+          const matches = /([^{]*.)(\{\{([A-Za-z0-9 _-]*)\}\})/g.exec(contentStr);
           if (!matches) {
             if (!!contentStr) {
               this.contents.push({
