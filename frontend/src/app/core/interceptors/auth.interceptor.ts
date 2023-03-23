@@ -1,4 +1,4 @@
-import { throwError as observableThrowError, Observable } from 'rxjs';
+import { throwError as observableThrowError, Observable, retry } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -13,6 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
       headers: req.headers.set('authorization', `Bearer ${this.authService.getToken() || ''}`),
     });
     return next.handle(authReq).pipe(
+      retry(1),
       catchError((err: HttpErrorResponse) => {
         if (err.status === 401 && err.error.msg === 'Login timed out, please login again.') {
           this.authService.logout();

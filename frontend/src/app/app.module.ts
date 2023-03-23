@@ -11,6 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { SharedModule } from '@shared';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from '@interceptors';
+import { AuthGuard } from '@guards';
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent],
@@ -31,6 +32,7 @@ import { AuthInterceptor } from '@interceptors';
       useClass: AuthInterceptor,
       multi: true,
     },
+    AuthGuard,
   ],
   bootstrap: [AppComponent],
 })

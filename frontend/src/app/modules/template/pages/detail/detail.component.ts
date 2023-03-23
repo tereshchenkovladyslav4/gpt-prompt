@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ContentEdit, Template } from '@models';
-import { FormValidationService, TemplateApiService } from '@services';
+import { FormValidationService, OpenaiApiService, TemplateApiService } from '@services';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContentType } from '@enums';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-detail',
@@ -24,6 +25,7 @@ export class DetailComponent implements OnInit {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private templateApiService: TemplateApiService,
+    private openaiApiService: OpenaiApiService,
     private formValidationService: FormValidationService,
   ) {
     this.infoForm = this.fb.group({});
@@ -43,45 +45,50 @@ export class DetailComponent implements OnInit {
   }
 
   private getTemplate(id: number) {
-    this.templateApiService.getTemplate(id).subscribe((res) => {
-      if (!res.success) {
-        this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
-        return;
-      }
-      this.template = res.result;
-      let contentStr = this.template?.content || '';
-      this.contents = [];
+    this.templateApiService.getTemplate(id).subscribe(
+      (res) => {
+        if (!res.success) {
+          this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
+          return;
+        }
+        this.template = res.result;
+        let contentStr = this.template?.content || '';
+        this.contents = [];
 
-      let index = 0;
-      while (1) {
-        const matches = /([^[]*.)(\[([A-Za-z0-9 _-]*)\])/g.exec(contentStr);
-        if (!matches) {
-          if (!!contentStr) {
+        let index = 0;
+        while (1) {
+          const matches = /([^[]*.)(\[([A-Za-z0-9 _-]*)\])/g.exec(contentStr);
+          if (!matches) {
+            if (!!contentStr) {
+              this.contents.push({
+                title: contentStr,
+                type: ContentType.STRING,
+              });
+            }
+            break;
+          }
+          contentStr = contentStr.replace(matches[0], '');
+          if (matches[1]) {
             this.contents.push({
-              title: contentStr,
+              title: matches[1],
               type: ContentType.STRING,
             });
+            index++;
           }
-          break;
-        }
-        contentStr = contentStr.replace(matches[0], '');
-        if (matches[1]) {
-          this.contents.push({
-            title: matches[1],
-            type: ContentType.STRING,
-          });
-          index++;
-        }
-        if (matches[3]) {
-          this.contents.push({
-            title: matches[3],
-            type: ContentType.KEYWORD,
-          });
+          if (matches[3]) {
+            this.contents.push({
+              title: matches[3],
+              type: ContentType.KEYWORD,
+            });
 
-          this.infoForm.addControl(`${index++}`, new FormControl('', [Validators.required]));
+            this.infoForm.addControl(`${index++}`, new FormControl('', [Validators.required]));
+          }
         }
-      }
-    });
+      },
+      (err: HttpErrorResponse) => {
+        this.snackBar.open(err.message || '', 'Dismiss', { duration: 4000 });
+      },
+    );
   }
 
   submitForm() {
@@ -90,7 +97,7 @@ export class DetailComponent implements OnInit {
       return;
     }
 
-    const contentString = this.contents
+    const prompt = this.contents
       .map((item, index) => {
         if (item.type == ContentType.STRING) {
           return item.title;
@@ -101,13 +108,19 @@ export class DetailComponent implements OnInit {
       .join('');
 
     this.submitted = true;
-    this.templateApiService.getAnswer(contentString).subscribe((res) => {
-      if (!res.success) {
-        this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
-        return;
-      }
-      this.submitted = false;
-      this.responseAnswer = res.result || '';
-    });
+    this.openaiApiService.getCompletion(prompt).subscribe(
+      (res) => {
+        if (!res.success) {
+          this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
+          return;
+        }
+        this.submitted = false;
+        this.responseAnswer = res.result || '';
+      },
+      (err: HttpErrorResponse) => {
+        this.submitted = false;
+        this.snackBar.open(err.message || '', 'Dismiss', { duration: 4000 });
+      },
+    );
   }
 }

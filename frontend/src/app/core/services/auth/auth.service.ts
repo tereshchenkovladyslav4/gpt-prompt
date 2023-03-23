@@ -50,7 +50,7 @@ export class AuthService {
     this.token = null;
     this.userSubject.next(undefined);
     this.clearLocalStorage();
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/login');
   }
 
   clearLocalStorage() {

@@ -1,21 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService, CommonService, FormValidationService, UserApiService } from '@services';
+import { AuthService, FormValidationService, UserApiService } from '@services';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   submitted: boolean = false;
   passwordVisibility: boolean = false;
   loginForm: FormGroup;
   forgotForm: FormGroup;
   forgotMode: boolean = false;
+  returnUrl: string = '/';
 
   constructor(
     private userApiService: UserApiService,
@@ -25,7 +27,7 @@ export class LoginComponent {
     private location: Location,
     private router: Router,
     private snackBar: MatSnackBar,
-    public commonService: CommonService,
+    private route: ActivatedRoute,
   ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, this.formValidationService.isBlank]],
@@ -36,7 +38,11 @@ export class LoginComponent {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      this.returnUrl = params['returnUrl'] || '/';
+    });
+  }
 
   checkError(form: FormGroup, field: string, error: string | string[]) {
     return this.formValidationService.checkError(form, field, error);
@@ -50,27 +56,40 @@ export class LoginComponent {
   }
 
   private userLogin() {
-    this.userApiService.userLogin(this.loginForm.value).subscribe((res) => {
-      this.submitted = false;
-      if (!res.success) {
-        this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
-        return;
-      }
-      if (res.result) {
-        this.authService.setToken(res.result);
-        this.goBack();
-      }
-    });
+    this.userApiService.userLogin(this.loginForm.value).subscribe(
+      (res) => {
+        this.submitted = false;
+        if (!res.success) {
+          this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
+          return;
+        }
+        if (res.result) {
+          this.authService.setToken(res.result);
+          this.goBack();
+        }
+      },
+      (err: HttpErrorResponse) => {
+        this.submitted = false;
+        this.snackBar.open(err.message || '', 'Dismiss', { duration: 4000 });
+      },
+    );
   }
 
   private forgotPassword() {
-    this.userApiService.forgotPassword(this.forgotForm.value).subscribe((res) => {
-      if (!res.success) {
-        this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
-        return;
-      }
-      this.goBack();
-    });
+    this.userApiService.forgotPassword(this.forgotForm.value).subscribe(
+      (res) => {
+        this.submitted = false;
+        if (!res.success) {
+          this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
+          return;
+        }
+        this.goBack();
+      },
+      (err: HttpErrorResponse) => {
+        this.submitted = false;
+        this.snackBar.open(err.message || '', 'Dismiss', { duration: 4000 });
+      },
+    );
   }
 
   toggleForgotMode() {
@@ -90,6 +109,6 @@ export class LoginComponent {
   }
 
   goBack() {
-    this.location.back();
+    this.router.navigateByUrl(this.returnUrl);
   }
 }

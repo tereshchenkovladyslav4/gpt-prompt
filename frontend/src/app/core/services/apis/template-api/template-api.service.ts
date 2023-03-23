@@ -20,8 +20,4 @@ export class TemplateApiService {
   getTemplate(id: number): Observable<ApiResponse<Template>> {
     return this.apiService.get(`template/${id}`);
   }
-
-  getAnswer(value: string): Observable<ApiResponse<string>> {
-    return this.apiService.post('template/answer', { inputString: value });
-  }
 }

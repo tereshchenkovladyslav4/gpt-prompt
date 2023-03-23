@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonService, DialogService, FormValidationService, UserApiService } from '@services';
 import { AlertDialogComponent } from '@shared';
 import { DialogType } from '@enums';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-signup',
@@ -53,27 +54,33 @@ export class SignupComponent implements OnInit {
   submitForm() {
     if (this.form.valid) {
       this.submitted = true;
-      this.userApiService.signup(this.form.value).subscribe((res) => {
-        this.submitted = false;
-        if (!res.success) {
-          this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
-          return;
-        }
-        this.dialogService
-          .open(AlertDialogComponent, {
-            data: {
-              title: 'Welcome, ' + res.result?.firstName + ', your registration was successful.',
-              comment:
-                'An email with further instructions on how to verify your account was sent to you, check your inbox!',
-              dialogType: DialogType.ALERT,
-            },
-            width: '400px',
-          })
-          .afterClosed()
-          .subscribe(() => {
-            this.commonService.goHome();
-          });
-      });
+      this.userApiService.signup(this.form.value).subscribe(
+        (res) => {
+          this.submitted = false;
+          if (!res.success) {
+            this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
+            return;
+          }
+          this.dialogService
+            .open(AlertDialogComponent, {
+              data: {
+                title: 'Welcome, ' + res.result?.firstName + ', your registration was successful.',
+                comment:
+                  'An email with further instructions on how to verify your account was sent to you, check your inbox!',
+                dialogType: DialogType.ALERT,
+              },
+              width: '400px',
+            })
+            .afterClosed()
+            .subscribe(() => {
+              this.commonService.goHome();
+            });
+        },
+        (err: HttpErrorResponse) => {
+          this.submitted = false;
+          this.snackBar.open(err.message || '', 'Dismiss', { duration: 4000 });
+        },
+      );
     }
   }
 }

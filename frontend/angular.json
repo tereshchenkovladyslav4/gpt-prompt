@@ -97,7 +97,10 @@
             "outputPath": "dist/frontend/server",
             "main": "server.ts",
             "tsConfig": "tsconfig.server.json",
-            "inlineStyleLanguage": "scss"
+            "inlineStyleLanguage": "scss",
+            "stylePreprocessorOptions": {
+              "includePaths": ["./src/theme/styles"]
+            }
           },
           "configurations": {
             "production": {

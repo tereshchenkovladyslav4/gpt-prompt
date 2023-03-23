@@ -4,6 +4,7 @@ import { DialogData, Template } from '@models';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormValidationService, TemplateApiService } from '@services';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-template-dialog',
@@ -43,14 +44,20 @@ export class TemplateDialogComponent implements OnInit {
   submitForm() {
     if (this.infoForm.valid) {
       this.submitted = true;
-      this.templateApiService.saveTemplate(this.infoForm.value).subscribe((res) => {
-        if (!res.success) {
-          this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
-          return;
-        }
-        this.submitted = false;
-        this.dialogRef.close(res.result);
-      });
+      this.templateApiService.saveTemplate(this.infoForm.value).subscribe(
+        (res) => {
+          if (!res.success) {
+            this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
+            return;
+          }
+          this.submitted = false;
+          this.dialogRef.close(res.result);
+        },
+        (err: HttpErrorResponse) => {
+          this.submitted = false;
+          this.snackBar.open(err.message || '', 'Dismiss', { duration: 4000 });
+        },
+      );
     }
   }
 }
