@@ -6,6 +6,21 @@
     #sidenav
     class="sidenav mat-elevation-z6"
   >
+    <mat-toolbar fxLayoutAlign="space-between center" class="sidenav-header">
+      <a class="logo" style="display: flex" routerLink="/" (click)="closeSubMenus()">
+        <img class="logo-wrap" src="assets/icons/logo.png" alt="logo" />
+      </a>
+    </mat-toolbar>
+
+    <div fxLayout="column" fxLayoutAlign="center center" class="user-block transition-2" [class.show]="true">
+      <div fxLayout="column" fxLayoutAlign="start center" class="user-info-wrapper">
+        <img
+          [src]="user?.profilePicture ? serverUrl + '/' + user?.profilePicture : 'assets/images/user.svg'"
+          alt="user-avatar"
+        />
+        <h4>{{ user?.firstName }}</h4>
+      </div>
+    </div>
   </mat-sidenav>
 
   <mat-sidenav-content id="main">
@@ -14,8 +29,8 @@
         <mat-toolbar>
           <div class="container d-flex justify-content-between align-items-center">
             <div>
-              <a routerLink="/" color="primary" class="no-hover-effect" mat-button disableRipple>
-                <img class="logo-wrap" src="assets/icons/logo.svg" />
+              <a routerLink="/">
+                <img class="logo-wrap" src="assets/icons/logo.png" alt="logo" />
               </a>
             </div>
 
@@ -25,9 +40,8 @@
                 <button (click)="logout()" mat-menu-item>Logout</button>
               </mat-menu>
               <button
-                *ngIf="!mediaService.isMobile()"
                 color="primary"
-                class="no-hover-effect"
+                class="no-hover-effect d-none d-md-inline-flex"
                 mat-button
                 disableRipple
                 [matMenuTriggerFor]="userMenu"
@@ -55,21 +69,17 @@
             </ng-container>
 
             <ng-template #notAuthenticated>
-              <ng-container *ngIf="!mediaService.isMobile()">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                  <button class="mr-1" routerLink="/login" mat-button>Log in</button>
-                  <button class="mr-1" routerLink="/signup" color="accent" mat-stroked-button>Sign Up</button>
-                  <a routerLink="/sitemanager/how" mat-button>How it works</a>
-                </div>
-              </ng-container>
+              <div class="d-none d-md-flex" fxLayout="row" fxLayoutAlign="start center">
+                <button class="mr-1" routerLink="/login" mat-button>Log in</button>
+                <button class="mr-1" routerLink="/signup" color="accent" mat-stroked-button>Sign Up</button>
+                <a routerLink="/site/how" mat-button>How it works</a>
+              </div>
               <mat-menu #authMenu="matMenu">
-                <a routerLink="/bid" mat-menu-item>Bid</a>
-                <a routerLink="/blab" mat-menu-item>Blab</a>
                 <button routerLink="/signup" mat-menu-item>Sign Up</button>
                 <button routerLink="/login" mat-menu-item>Log in</button>
-                <a routerLink="/sitemanager/how" mat-menu-item>How it works</a>
+                <a routerLink="/site/how" mat-menu-item>How it works</a>
               </mat-menu>
-              <button *ngIf="mediaService.isMobile()" mat-icon-button [matMenuTriggerFor]="authMenu">
+              <button class="d-md-none" mat-icon-button [matMenuTriggerFor]="authMenu">
                 <mat-icon>more_vert</mat-icon>
               </button>
             </ng-template>
@@ -88,18 +98,18 @@
           <mat-toolbar fxLayout="column" fxLayoutAlign="center" color="primary">
             <div fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutAlign="center center">
               <div class="footer-main" fxLayout="row wrap" fxLayoutAlign="center center">
-                <div><a routerLink="/sitemanager/about">About</a></div>
-                <div><a routerLink="/sitemanager/how">How it works</a></div>
+                <div><a routerLink="/site/about">About</a></div>
+                <div><a routerLink="/site/how">How it works</a></div>
                 <div>
-                  <a routerLink="/sitemanager/investor" [ngClass]="{ 'border-none': mediaService.isMobile() }"
+                  <a routerLink="/site/investor" [ngClass]="{ 'border-none': mediaService.isMobile() }"
                     >Investor Relations</a
                   >
                 </div>
               </div>
               <div class="footer-main" fxLayout="row wrap" fxLayoutAlign="center center">
-                <div><a routerLink="/sitemanager/terms">Terms of Service</a></div>
-                <div><a routerLink="/sitemanager/privacy">Privacy Policy</a></div>
-                <div><a routerLink="/sitemanager/cookie" class="border-none">Cookie Policy</a></div>
+                <div><a routerLink="/site/terms">Terms of Service</a></div>
+                <div><a routerLink="/site/privacy">Privacy Policy</a></div>
+                <div><a routerLink="/site/cookie" class="border-none">Cookie Policy</a></div>
               </div>
             </div>
             <div fxLayout="row" fxLayoutAlign="center center" class="copyright-wrap">
