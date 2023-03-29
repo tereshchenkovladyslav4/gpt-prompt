@@ -32,7 +32,7 @@ export class TemplateDialogComponent implements OnInit {
         this.data.data?.content || '',
         [Validators.required, Validators.maxLength(500), this.formValidationService.isBlank],
       ],
-      private: [this.data.data ? this.data.data.private : true],
+      private: [this.data.data ? !!this.data.data.private : true],
     });
   }
 

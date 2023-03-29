@@ -126,18 +126,9 @@ export class DetailComponent implements OnInit {
       return;
     }
 
-    const prompt = this.contents
-      .map((item, index) => {
-        if (item.type == ContentType.STRING) {
-          return item.title;
-        } else {
-          return this.infoForm.value[index];
-        }
-      })
-      .join('');
-
+    if (!this.template) return;
     this.submitted = true;
-    this.openaiApiService.getCompletion(prompt).subscribe(
+    this.openaiApiService.getCompletion(this.template.id, JSON.stringify(this.infoForm.value)).subscribe(
       (res) => {
         if (!res.success) {
           this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { horizontalMenuItems, verticalMenuItems } from '@constants';
+import { HORIZONTAL_MENU_ITEMS, VERTICAL_MENU_ITEMS } from '@constants';
 import { DOCUMENT, Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { Menu } from '@models';
@@ -11,11 +11,11 @@ export class MenuService {
   constructor(private location: Location, private router: Router, @Inject(DOCUMENT) private doc: Document) {}
 
   public getVerticalMenuItems(): Array<Menu> {
-    return verticalMenuItems;
+    return VERTICAL_MENU_ITEMS;
   }
 
   public getHorizontalMenuItems(): Array<Menu> {
-    return horizontalMenuItems;
+    return HORIZONTAL_MENU_ITEMS;
   }
 
   public expandActiveSubMenu(menu: Array<Menu>) {

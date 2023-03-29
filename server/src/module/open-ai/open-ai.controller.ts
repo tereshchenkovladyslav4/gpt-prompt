@@ -10,11 +10,10 @@ export class OpenAiController {
   @Post('completion')
   async getCompletion(@Body() data: GetAnswerDto): Promise<ApiResponse<string>> {
     try {
-      const { prompt } = data;
       return {
         success: true,
         statusCode: HttpStatus.OK,
-        result: await this.openAiService.getCompletion(prompt),
+        result: await this.openAiService.getTemplateCompletion(data),
       };
     } catch (err) {
       return {

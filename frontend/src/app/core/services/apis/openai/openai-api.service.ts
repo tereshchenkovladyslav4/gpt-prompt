@@ -9,7 +9,7 @@ import { ApiService } from '../api/api.service';
 export class OpenaiApiService {
   constructor(private apiService: ApiService) {}
 
-  getCompletion(prompt: string): Observable<ApiResponse<string>> {
-    return this.apiService.post('openai/completion', { prompt: prompt });
+  getCompletion(templateId: number, placeholders: string): Observable<ApiResponse<string>> {
+    return this.apiService.post('openai/completion', { templateId: templateId, placeholders: placeholders });
   }
 }
