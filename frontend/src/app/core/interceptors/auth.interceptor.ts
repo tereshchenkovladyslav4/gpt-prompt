@@ -15,7 +15,7 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(authReq).pipe(
       retry(1),
       catchError((err: HttpErrorResponse) => {
-        if (err.status === 401 && err.error.msg === 'Login timed out, please login again.') {
+        if (err.status === 401 && err.error.message === 'Token error: jwt expired') {
           this.authService.logout();
         }
         return observableThrowError(err);

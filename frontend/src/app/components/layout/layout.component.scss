@@ -44,6 +44,7 @@ header {
 
   .mat-toolbar {
     background-color: white;
+    padding: 0;
   }
 
   button {
@@ -92,7 +93,7 @@ header {
     padding: 4px 0;
     box-shadow: 0 0 5px 0 #ccc;
 
-    .button-menu {
+    .bottom-menu {
       flex-direction: row;
       box-sizing: border-box;
       display: flex;
@@ -102,6 +103,10 @@ header {
       width: 100%;
       font-weight: 400;
     }
+  }
+
+  @media (max-width: 767px) {
+    width: 280px !important;
   }
 }
 

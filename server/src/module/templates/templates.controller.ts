@@ -31,14 +31,23 @@ export class TemplatesController {
   }
 
   @Get()
+  async getTemplates(@Query() query: Filter): Promise<ApiResponse<Pagination<Template>>> {
+    return {
+      success: true,
+      statusCode: HttpStatus.OK,
+      result: await this.templatesService.get(query),
+    };
+  }
+
+  @Get('mine')
   @UseGuards(AuthGuard)
-  async getTemplates(@Query() query: Filter, @Req() req: any): Promise<ApiResponse<Pagination<Template>>> {
+  async getMyTemplates(@Query() query: Filter, @Req() req: any): Promise<ApiResponse<Pagination<Template>>> {
     const { userId } = req;
 
     return {
       success: true,
       statusCode: HttpStatus.OK,
-      result: await this.templatesService.get(userId, query),
+      result: await this.templatesService.getMy(userId, query),
     };
   }
 

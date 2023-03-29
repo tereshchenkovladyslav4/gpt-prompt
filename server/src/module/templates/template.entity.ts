@@ -16,6 +16,9 @@ export class Template {
   @Column('text', { nullable: true })
   content: string;
 
+  @Column('tinyint', { default: true })
+  private: boolean;
+
   @ManyToOne(() => User, (user) => user.templates)
   user: User;
 }

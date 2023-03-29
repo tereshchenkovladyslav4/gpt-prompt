@@ -19,7 +19,6 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () => import('./modules/template/template.module').then((m) => m.TemplateModule),
-        canActivate: [AuthGuard],
       },
     ],
   },

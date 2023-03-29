@@ -12,6 +12,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const MAT_MODULES = [
   MatButtonModule,
@@ -20,8 +22,10 @@ const MAT_MODULES = [
   MatDialogModule,
   MatIconModule,
   MatInputModule,
+  MatMenuModule,
   MatPaginatorModule,
   MatSnackBarModule,
+  MatTooltipModule,
 ];
 
 @NgModule({

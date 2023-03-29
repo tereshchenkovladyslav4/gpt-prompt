@@ -13,8 +13,8 @@ export class TemplateApiService {
     return this.apiService.post('template', data);
   }
 
-  getTemplates(filter: Filter): Observable<ApiResponse<Pagination<Template>>> {
-    return this.apiService.get('template', filter);
+  getTemplates(isMy: boolean, filter: Filter): Observable<ApiResponse<Pagination<Template>>> {
+    return this.apiService.get(isMy ? 'template/mine' : 'template', filter);
   }
 
   getTemplate(id: number): Observable<ApiResponse<Template>> {

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LayoutComponent } from '@components';
+import { HorizontalMenuComponent, LayoutComponent, VerticalMenuComponent } from '@components';
 import { AppRoutingModule } from './app-routing.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { CommonModule } from '@angular/common';
@@ -12,9 +12,10 @@ import { SharedModule } from '@shared';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from '@interceptors';
 import { AuthGuard } from '@guards';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 @NgModule({
-  declarations: [AppComponent, LayoutComponent],
+  declarations: [AppComponent, LayoutComponent, HorizontalMenuComponent, VerticalMenuComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserAnimationsModule,
@@ -25,6 +26,7 @@ import { AuthGuard } from '@guards';
     MatMenuModule,
     MatSidenavModule,
     MatToolbarModule,
+    PerfectScrollbarModule,
   ],
   providers: [
     {

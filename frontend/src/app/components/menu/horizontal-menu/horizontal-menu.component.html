@@ -1,0 +1,49 @@
+<div [fxLayout]="menuParentId == 0 ? 'row' : 'column'" fxLayoutAlign="start center">
+  <div *ngFor="let menu of menuItems" class="horizontal-menu-item w-100">
+    <a
+      *ngIf="menu.routerLink && !menu.hasSubMenu"
+      mat-button
+      fxLayout="row"
+      [fxLayoutAlign]="'center center'"
+      [routerLink]="[menu.routerLink]"
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }"
+      [matTooltip]="menu.title"
+      matTooltipPosition="above"
+      [matTooltipDisabled]="true"
+      [id]="'horizontal-menu-item-' + menu.id"
+    >
+      <span class="horizontal-menu-title">{{ menu.title }}</span>
+    </a>
+    <a
+      *ngIf="menu.href && !menu.hasSubMenu"
+      mat-button
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      [attr.href]="menu.href || ''"
+      [attr.target]="menu.target || ''"
+      [matTooltip]="menu.title"
+      matTooltipPosition="above"
+      [matTooltipDisabled]="true"
+      [id]="'horizontal-menu-item-' + menu.id"
+    >
+      <span class="horizontal-menu-title">{{ menu.title }}</span>
+    </a>
+    <a
+      *ngIf="menu.hasSubMenu"
+      mat-button
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      [matTooltip]="menu.title"
+      matTooltipPosition="above"
+      [matTooltipDisabled]="true"
+      [id]="'horizontal-menu-item-' + menu.id"
+    >
+      <span class="horizontal-menu-title">{{ menu.title }}</span>
+    </a>
+
+    <div *ngIf="menu.hasSubMenu" class="horizontal-sub-menu" [id]="'horizontal-sub-menu-' + menu.id">
+      <app-horizontal-menu [menuParentId]="menu.id"></app-horizontal-menu>
+    </div>
+  </div>
+</div>

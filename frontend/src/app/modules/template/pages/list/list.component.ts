@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService, DialogService, TemplateApiService } from '@services';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TemplateDialogComponent } from '@modules/template/components/template-dialog/template-dialog.component';
 import { DialogType } from '@enums';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,6 +14,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
+  private isMy: boolean = false;
   templates: Template[] = [];
   public totalCount: number = 1;
   public pageIndex: number = 0;
@@ -23,12 +24,16 @@ export class ListComponent implements OnInit {
     private authService: AuthService,
     private dialogService: DialogService,
     private router: Router,
+    private route: ActivatedRoute,
     private templateApiService: TemplateApiService,
     private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
-    this.getTemplates();
+    this.route.data.subscribe((data) => {
+      this.isMy = !!data['isMy'];
+      this.getTemplates();
+    });
   }
 
   getTemplates(event?: PageEvent) {
@@ -36,14 +41,13 @@ export class ListComponent implements OnInit {
       this.pageSize = event.pageSize;
       this.pageIndex = event.pageIndex;
     }
-    this.templateApiService.getTemplates({ pageIndex: this.pageIndex, pageSize: this.pageSize }).subscribe(
+    this.templateApiService.getTemplates(this.isMy, { pageIndex: this.pageIndex, pageSize: this.pageSize }).subscribe(
       (res) => {
         if (!res.success) {
           this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
           return;
         }
         this.templates = res.result?.data || [];
-        // this.totalCount = Math.ceil((res.result?.totalCount || 0) / this.pageSize);
         this.totalCount = res.result?.totalCount || 0;
         if (this.totalCount <= this.pageSize * this.pageIndex) {
           this.pageIndex = 0;
@@ -53,6 +57,14 @@ export class ListComponent implements OnInit {
         this.snackBar.open(err.message || '', 'Dismiss', { duration: 4000 });
       },
     );
+  }
+
+  editable(template: Template): boolean {
+    return this.authService.getUser()?.id == template.userId;
+  }
+
+  isAuthenticated() {
+    return this.authService.isAuthenticated();
   }
 
   openTemplateDialog(template?: Template) {

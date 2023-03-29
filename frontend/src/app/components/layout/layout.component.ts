@@ -1,9 +1,12 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { AuthService, MediaService } from '@services';
 import { UserInfo } from '@models';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { environment } from '@env/environment';
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
+import { filter } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -14,12 +17,15 @@ import { DOCUMENT } from '@angular/common';
 export class LayoutComponent implements OnInit {
   public serverUrl = environment.apiURL;
   @ViewChild('sidenav') sidenav: any;
+  @ViewChild('sidenavPS') sidenavPS: PerfectScrollbarComponent | undefined;
   public user: UserInfo | undefined;
   public menuHidden = false;
 
   constructor(
+    private router: Router,
     public mediaService: MediaService,
     public authService: AuthService,
+    @Inject(PLATFORM_ID) private platformId: Object,
     @Inject(DOCUMENT) private document: Document,
   ) {}
 
@@ -28,6 +34,18 @@ export class LayoutComponent implements OnInit {
       .getUserUpdates()
       .pipe(untilDestroyed(this))
       .subscribe((user) => (this.user = user));
+
+    this.router.events
+      .pipe(untilDestroyed(this))
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        if (isPlatformBrowser(this.platformId)) {
+          if (this.sidenav) {
+            this.sidenav.close();
+          }
+          window.scrollTo(0, 0);
+        }
+      });
   }
 
   closeMenu() {
@@ -60,5 +78,9 @@ export class LayoutComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.closeMenu();
+  }
+
+  public updatePS() {
+    this.sidenavPS?.directiveRef?.update();
   }
 }

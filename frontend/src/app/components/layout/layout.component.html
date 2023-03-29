@@ -21,6 +21,15 @@
         <h4>{{ user?.firstName }}</h4>
       </div>
     </div>
+
+    <perfect-scrollbar #sidenavPS class="sidenav-menu-outer">
+      <app-vertical-menu [menuParentId]="0" (onClickMenuItem)="updatePS()"> </app-vertical-menu>
+    </perfect-scrollbar>
+    <div class="sidenav-bottom-menu">
+      <a mat-button class="bottom-menu" (click)="logout(); toggleSidenav()">
+        <mat-icon>power_settings_new</mat-icon> Logout
+      </a>
+    </div>
   </mat-sidenav>
 
   <mat-sidenav-content id="main">
@@ -34,55 +43,60 @@
               </a>
             </div>
 
-            <ng-container *ngIf="authService.isAuthenticated(); else notAuthenticated">
-              <mat-menu #userMenu="matMenu">
-                <button routerLink="/account" mat-menu-item>Account Information</button>
-                <button (click)="logout()" mat-menu-item>Logout</button>
-              </mat-menu>
-              <button
-                color="primary"
-                class="no-hover-effect d-none d-md-inline-flex"
-                mat-button
-                disableRipple
-                [matMenuTriggerFor]="userMenu"
-              >
-                <div fxLayout="row" fxLayoutAlign="start center">
-                  <div
-                    class="avatar me-3"
-                    [style.background-image]="
-                      user?.profilePicture
-                        ? 'url(' + serverUrl + '/' + user?.profilePicture + ')'
-                        : 'url(assets/images/user.svg)'
-                    "
-                  ></div>
-                  <small class="">{{ user?.firstName }}</small>
-                </div>
-              </button>
-              <button
-                *ngIf="mediaService.isMobile()"
-                mat-icon-button
-                [ngClass]="{ 'is-active': !menuHidden }"
-                (click)="toggleSidenav()"
-              >
-                <mat-icon>menu</mat-icon>
-              </button>
-            </ng-container>
+            <div class="d-flex align-items-center">
+              <app-horizontal-menu [menuParentId]="0" *ngIf="!mediaService.isMobile()" class="pe-4">
+              </app-horizontal-menu>
 
-            <ng-template #notAuthenticated>
-              <div class="d-none d-md-flex" fxLayout="row" fxLayoutAlign="start center">
-                <button class="mr-1" routerLink="/login" mat-button>Log in</button>
-                <button class="mr-1" routerLink="/signup" color="accent" mat-stroked-button>Sign Up</button>
-                <a routerLink="/site/how" mat-button>How it works</a>
-              </div>
-              <mat-menu #authMenu="matMenu">
-                <button routerLink="/signup" mat-menu-item>Sign Up</button>
-                <button routerLink="/login" mat-menu-item>Log in</button>
-                <a routerLink="/site/how" mat-menu-item>How it works</a>
-              </mat-menu>
-              <button class="d-md-none" mat-icon-button [matMenuTriggerFor]="authMenu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-            </ng-template>
+              <ng-container *ngIf="authService.isAuthenticated(); else notAuthenticated">
+                <mat-menu #userMenu="matMenu">
+                  <button routerLink="/account" mat-menu-item>Account Information</button>
+                  <button (click)="logout()" mat-menu-item>Logout</button>
+                </mat-menu>
+                <button
+                  color="primary"
+                  class="no-hover-effect d-none d-md-inline-flex"
+                  mat-button
+                  disableRipple
+                  [matMenuTriggerFor]="userMenu"
+                >
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    <div
+                      class="avatar me-3"
+                      [style.background-image]="
+                        user?.profilePicture
+                          ? 'url(' + serverUrl + '/' + user?.profilePicture + ')'
+                          : 'url(assets/images/user.svg)'
+                      "
+                    ></div>
+                    <small class="">{{ user?.firstName }}</small>
+                  </div>
+                </button>
+                <button
+                  *ngIf="mediaService.isMobile()"
+                  mat-icon-button
+                  [ngClass]="{ 'is-active': !menuHidden }"
+                  (click)="toggleSidenav()"
+                >
+                  <mat-icon>menu</mat-icon>
+                </button>
+              </ng-container>
+
+              <ng-template #notAuthenticated>
+                <div class="d-none d-md-flex" fxLayout="row" fxLayoutAlign="start center">
+                  <button class="mr-1" routerLink="/login" mat-button>Log in</button>
+                  <button class="mr-1" routerLink="/signup" color="accent" mat-stroked-button>Sign Up</button>
+                  <a routerLink="/site/how" mat-button>How it works</a>
+                </div>
+                <mat-menu #authMenu="matMenu">
+                  <button routerLink="/signup" mat-menu-item>Sign Up</button>
+                  <button routerLink="/login" mat-menu-item>Log in</button>
+                  <a routerLink="/site/how" mat-menu-item>How it works</a>
+                </mat-menu>
+                <button class="d-md-none" mat-icon-button [matMenuTriggerFor]="authMenu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+              </ng-template>
+            </div>
           </div>
         </mat-toolbar>
       </header>
