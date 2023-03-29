@@ -1,4 +1,4 @@
-import { IsInt, IsString, ValidateIf } from 'class-validator';
+import { IsBoolean, IsInt, IsString, ValidateIf } from 'class-validator';
 
 export class SaveTemplateDto {
   userId: number;
@@ -12,4 +12,7 @@ export class SaveTemplateDto {
 
   @IsString()
   content: string;
+
+  @IsBoolean()
+  private: boolean;
 }
