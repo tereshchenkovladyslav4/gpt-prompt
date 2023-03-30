@@ -6,3 +6,7 @@
     font-size: 20px;
   }
 }
+
+:host ::ng-deep .search-box-wrap .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}

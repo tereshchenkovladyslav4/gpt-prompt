@@ -17,8 +17,11 @@ export class TemplatesService {
   }
 
   async get(filter: Filter): Promise<Pagination<Template>> {
-    const { pageSize, pageIndex } = filter;
+    const { pageSize, pageIndex, search } = filter;
     const qb = await this.templatesRepository.createQueryBuilder('Template').where({ private: false });
+    if (search) {
+      qb.where(`(title LIKE "%${search}%" OR content LIKE "%${search}%")`);
+    }
     if (pageSize != undefined) {
       qb.take(pageSize);
     }
@@ -36,8 +39,11 @@ export class TemplatesService {
   }
 
   async getMy(userId: number, filter: Filter): Promise<Pagination<Template>> {
-    const { pageSize, pageIndex } = filter;
+    const { pageSize, pageIndex, search } = filter;
     const qb = await this.templatesRepository.createQueryBuilder('Template').where({ userId: userId });
+    if (search) {
+      qb.where(`(title LIKE "%${search}%" OR content LIKE "%${search}%")`);
+    }
     if (pageSize != undefined) {
       qb.take(pageSize);
     }

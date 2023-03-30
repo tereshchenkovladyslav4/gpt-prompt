@@ -1,4 +1,14 @@
-<div class="search-box-wrap" fxLayout="row wrap" fxLayoutAlign="end center">
+<div class="search-box-wrap mb-4" fxLayout="row wrap" fxLayoutAlign="start center">
+  <div class="pe-4" fxFlex>
+    <mat-form-field appearance="outline" fxFlex class="mb-0" hideRequiredMarker="true">
+      <mat-label>Search</mat-label>
+      <button mat-icon-button matSuffix (click)="clearSearch()">
+        <mat-icon *ngIf="!search">search</mat-icon>
+        <mat-icon *ngIf="!!search">close</mat-icon>
+      </button>
+      <input type="text" [(ngModel)]="search" (ngModelChange)="searchInput$.next(search)" matInput />
+    </mat-form-field>
+  </div>
   <button (click)="openTemplateDialog()" mat-raised-button color="accent" [disabled]="!isAuthenticated()">
     +Add Template
   </button>
