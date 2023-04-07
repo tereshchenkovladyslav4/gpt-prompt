@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from '@components';
-import { AuthGuard } from '@guards';
+import { PricingComponent } from 'ngx-stripe-subscription';
 
 const routes: Routes = [
   {
@@ -15,6 +15,10 @@ const routes: Routes = [
       {
         path: 'login',
         loadChildren: () => import('./modules//login/login.module').then((m) => m.LoginModule),
+      },
+      {
+        path: 'pricing',
+        component: PricingComponent,
       },
       {
         path: '',

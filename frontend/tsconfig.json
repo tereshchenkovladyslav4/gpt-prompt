@@ -30,7 +30,8 @@
       "@models": ["src/app/core/models/index"],
       "@modules/*": ["src/app/modules/*"],
       "@services": ["src/app/core/services/index"],
-      "@shared": ["src/app/shared/index"]
+      "@shared": ["src/app/shared/index"],
+      "ngx-stripe-subscription": ["projects/ngx-stripe-subscription/src"]
     }
   },
   "angularCompilerOptions": {

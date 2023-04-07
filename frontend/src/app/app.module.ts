@@ -13,6 +13,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from '@interceptors';
 import { AuthGuard } from '@guards';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { NgxStripeSubscriptionModule } from 'ngx-stripe-subscription';
+import { environment } from '@env/environment.prod';
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent, HorizontalMenuComponent, VerticalMenuComponent],
@@ -27,6 +29,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     MatSidenavModule,
     MatToolbarModule,
     PerfectScrollbarModule,
+    NgxStripeSubscriptionModule.forRoot({ apiURL: environment.apiURL }),
   ],
   providers: [
     {

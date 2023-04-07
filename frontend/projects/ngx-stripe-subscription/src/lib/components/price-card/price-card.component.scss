@@ -1,0 +1,23 @@
+.price-card {
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  transition: transform 0.42s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  &:hover {
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+    transform: scale(1.05) translate(0, -12px);
+
+    @media (min-width: 992px) {
+      transform: scale(1.05) translate(0, -24px);
+    }
+  }
+
+  &.selected {
+    border-top: 6px solid green;
+  }
+
+  h3 {
+    font-size: 32px;
+    font-weight: bold;
+  }
+}

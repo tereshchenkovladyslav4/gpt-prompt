@@ -1,0 +1,47 @@
+.main-heading {
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 50px;
+
+  @media (max-width: 767px) {
+    font-weight: 700;
+    font-size: 27px;
+    line-height: 35px;
+  }
+}
+
+.content-s {
+  font-weight: 400;
+  font-size: 28px;
+
+  @media (max-width: 767px) {
+    font-weight: 400;
+    font-size: 20px;
+  }
+}
+
+.title-ls {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+
+  text-align: center;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+:host ::ng-deep {
+  .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    padding: 0 24px;
+    line-height: 40px;
+  }
+
+  .mat-button-toggle {
+    width: 100px;
+  }
+
+  .mat-button-toggle-checked {
+    background: #3f51b5;
+    color: white;
+  }
+}

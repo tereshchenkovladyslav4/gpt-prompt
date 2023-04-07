@@ -1,0 +1,25 @@
+<div>
+  <section>
+    <div class="container">
+      <h1 class="main-heading">Our Pricing</h1>
+      <p class="content-s">Amet minim mollit non deserunt ullamco est sit aliqua dolor</p>
+    </div>
+  </section>
+  <section class="mt-5 pt-md-5">
+    <div class="container">
+      <div class="d-flex justify-content-end mb-5">
+        <mat-button-toggle-group [(ngModel)]="period" (ngModelChange)="getPlans()">
+          <mat-button-toggle [value]="PlanPeriod.MONTHLY">Monthly</mat-button-toggle>
+          <mat-button-toggle [value]="PlanPeriod.YEARLY">Yearly</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <div class="row gx-md-5 justify-content-center">
+        <ng-container *ngFor="let plan of plans">
+          <div class="col-md-6 col-lg-4 mb-5">
+            <lib-price-card [plan]="plan" [selected]="selectedPlan?.code === plan.code"></lib-price-card>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </section>
+</div>

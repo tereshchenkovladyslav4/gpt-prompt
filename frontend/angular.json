@@ -26,7 +26,15 @@
             "stylePreprocessorOptions": {
               "includePaths": ["./src/theme/styles"]
             },
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./projects/ngx-stripe-subscription/assets",
+                "output": "/assets/"
+              }]
+            ],
             "styles": [
               "node_modules/bootstrap/scss/bootstrap.scss",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
@@ -151,6 +159,44 @@
             }
           },
           "defaultConfiguration": "production"
+        }
+      }
+    },
+    "ngx-stripe-subscription": {
+      "projectType": "library",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/ngx-stripe-subscription",
+      "sourceRoot": "projects/ngx-stripe-subscription/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ngx-stripe-subscription/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-stripe-subscription/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-stripe-subscription/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/ngx-stripe-subscription/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
         }
       }
     }

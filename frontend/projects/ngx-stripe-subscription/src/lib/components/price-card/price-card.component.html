@@ -1,0 +1,18 @@
+<div class="price-card h-100 p-4 p-md-5 d-flex flex-column" [class.selected]="selected">
+  <h3 class="mb-4">{{ plan?.name }}</h3>
+  <p class="mb-4">{{ plan?.description }}</p>
+  <ul class="list-unstyled list-price mb-4 flex-fill">
+    <li><img src="assets/icons/check.svg" class="img-fluid me-3" alt="" /> Lorem ipsum dolor sit</li>
+    <li><img src="assets/icons/check.svg" class="img-fluid me-3" alt="" /> Amet venim irure alue consectetur</li>
+    <li><img src="assets/icons/check.svg" class="img-fluid me-3" alt="" /> Anime euismod ullamco quis nostrud</li>
+    <li>
+      <img src="assets/icons/check.svg" class="img-fluid me-3" alt="" />
+      Consectetur sint exercitat mollit
+    </li>
+    <li><img src="assets/icons/check.svg" class="img-fluid me-3" alt="" /> Duis aute deserunt velit</li>
+  </ul>
+  <h5 class="text-blue text-center mb-4">from ${{ plan?.price }} / month</h5>
+  <button class="w-100" mat-raised-button color="primary" [disabled]="selected">
+    Choose the {{ plan?.name }} Plan
+  </button>
+</div>
