@@ -14,7 +14,7 @@ import { AuthInterceptor } from '@interceptors';
 import { AuthGuard } from '@guards';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { NgxStripeSubscriptionModule } from 'ngx-stripe-subscription';
-import { environment } from '@env/environment.prod';
+import { environment } from '@env/environment';
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent, HorizontalMenuComponent, VerticalMenuComponent],

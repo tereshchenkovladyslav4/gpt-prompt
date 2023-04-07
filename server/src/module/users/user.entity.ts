@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Subscription } from '../subscription/subscription.entity';
 import { Template } from '../templates/template.entity';
 
 @Entity()
@@ -24,4 +25,7 @@ export class User {
 
   @OneToMany(() => Template, (template) => template.user)
   templates: Template[];
+
+  @OneToMany(() => Subscription, (subscription) => subscription.user)
+  subscriptions: Subscription[];
 }

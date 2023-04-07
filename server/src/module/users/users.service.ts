@@ -1,17 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { PaymentStatus, SubscriptionStatus } from '@enums';
+import { Not, Repository } from 'typeorm';
 import * as crypto from 'crypto';
 import * as process from 'process';
 import { CreateUserDto } from './dto/createUser.dto';
 import { User } from './user.entity';
+import { Plan } from '../plan/plan.entity';
+import { RequestSubscriptionDto } from '../subscription/dto/request-subscription.dto';
+import { Subscription } from '../subscription/subscription.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    @InjectRepository(Plan)
+    private plansRepository: Repository<Plan>,
+    @InjectRepository(Subscription)
+    private subscriptionsRepository: Repository<Subscription>,
     private jwtService: JwtService,
   ) {}
 
@@ -44,7 +52,38 @@ export class UsersService {
 
   async login(user: User) {
     delete user.password;
-    const payload = { user: user };
+    const subscription = await this.subscriptionsRepository
+      .createQueryBuilder('Subscription')
+      .where({ userId: user.id })
+      .andWhere({ status: Not(SubscriptionStatus.CANCELLED) })
+      .orderBy('id', 'DESC')
+      .getOne();
+
+    const payload = { user: { ...user, subscription: subscription } };
     return this.jwtService.sign(payload, { expiresIn: '1 day' });
+  }
+
+  async subscribe(data: RequestSubscriptionDto) {
+    const existingSubscription = await this.subscriptionsRepository.findOne({
+      where: { userId: data.userId, status: Not(SubscriptionStatus.CANCELLED) },
+    });
+
+    if (existingSubscription) {
+      await this.subscriptionsRepository.save({ ...existingSubscription, status: SubscriptionStatus.CANCELLED });
+    }
+
+    const plan = await this.plansRepository.findOne({ where: { id: data.planId } });
+    const amount = plan.price;
+    const vatAmount = (amount * (+process.env.VAT_PERCENT || 0)) / 100;
+    await this.subscriptionsRepository.save({
+      ...data,
+      amount,
+      vatAmount,
+      billingSchema: plan.period,
+      status: SubscriptionStatus.INACTIVE,
+      paymentStatus: PaymentStatus.NOT_PAID,
+    });
+
+    return await this.login(await this.read(data.userId));
   }
 }

@@ -1,9 +1,12 @@
-import { Controller, Get, Param, HttpStatus, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, HttpStatus, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { AuthGuard } from '@guards';
 import { ApiResponse } from '@models';
 import { CreateUserDto } from './dto/createUser.dto';
 import { LoginDto } from './dto/login.dto';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
+import { RequestSubscriptionDto } from '../subscription/dto/request-subscription.dto';
+import { Subscription } from '../subscription/subscription.entity';
 
 @Controller('user')
 export class UsersController {
@@ -72,5 +75,26 @@ export class UsersController {
       statusCode: HttpStatus.OK,
       data: await this.usersService.read(id),
     };
+  }
+
+  @Post('/subscribe')
+  @UseGuards(AuthGuard)
+  async requestSubscription(@Body() data: RequestSubscriptionDto, @Req() req: any): Promise<ApiResponse<string>> {
+    try {
+      const { userId } = req;
+
+      return {
+        success: true,
+        statusCode: HttpStatus.OK,
+        message: ['Subscribed successfully'],
+        result: await this.usersService.subscribe({ ...data, userId: userId }),
+      };
+    } catch (err) {
+      return {
+        success: false,
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: [err.message],
+      };
+    }
   }
 }

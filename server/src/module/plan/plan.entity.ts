@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { PlanCode } from '../../core/enums/plan/plan-code.enum';
-import { PlanPeriod } from '../../core/enums/plan/plan-period.enum';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { PlanCode, PlanPeriod } from '../../core/enums';
+import { Subscription } from '../subscription/subscription.entity';
 
 @Entity()
 export class Plan {
@@ -34,4 +34,7 @@ export class Plan {
 
   @Column('tinyint', { default: true })
   active: boolean;
+
+  @OneToMany(() => Subscription, (subscription) => subscription.plan)
+  subscriptions: Subscription[];
 }

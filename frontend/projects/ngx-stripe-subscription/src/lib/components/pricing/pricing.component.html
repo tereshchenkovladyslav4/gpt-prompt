@@ -16,7 +16,11 @@
       <div class="row gx-md-5 justify-content-center">
         <ng-container *ngFor="let plan of plans">
           <div class="col-md-6 col-lg-4 mb-5">
-            <lib-price-card [plan]="plan" [selected]="selectedPlan?.code === plan.code"></lib-price-card>
+            <lib-price-card
+              [plan]="plan"
+              [selected]="subscription?.planId === plan.id"
+              (onChangePlan)="handleSelectPlan($event)"
+            ></lib-price-card>
           </div>
         </ng-container>
       </div>

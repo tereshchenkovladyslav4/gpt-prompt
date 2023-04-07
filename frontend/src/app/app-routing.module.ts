@@ -14,11 +14,11 @@ const routes: Routes = [
       },
       {
         path: 'login',
-        loadChildren: () => import('./modules//login/login.module').then((m) => m.LoginModule),
+        loadChildren: () => import('./modules/login/login.module').then((m) => m.LoginModule),
       },
       {
         path: 'pricing',
-        component: PricingComponent,
+        loadChildren: () => import('./modules/subscription/subscription.module').then((m) => m.SubscriptionModule),
       },
       {
         path: '',

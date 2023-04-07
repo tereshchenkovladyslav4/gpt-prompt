@@ -6,10 +6,11 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [PricingComponent, PriceCardComponent],
-  imports: [CommonModule, FormsModule, MatButtonModule, MatButtonToggleModule],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatButtonToggleModule, MatSnackBarModule],
   exports: [PricingComponent, PriceCardComponent],
 })
 export class NgxStripeSubscriptionModule {

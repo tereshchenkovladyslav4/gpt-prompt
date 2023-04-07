@@ -8,7 +8,9 @@ import { UpdateTemplateTable1679322876482 } from './migration/1679322876482-Upda
 import { UpdateTemplateTable1680093087191 } from './migration/1680093087191-UpdateTemplateTable';
 import { CreatePlanTable1680827223545 } from './migration/1680827223545-CreatePlanTable';
 import { UpdatePlanTable1680828046085 } from './migration/1680828046085-UpdatePlanTable';
+import { CreateSubscriptionTable1680860268374 } from './migration/1680860268374-CreateSubscriptionTable';
 import { Plan } from './module/plan/plan.entity';
+import { Subscription } from './module/subscription/subscription.entity';
 import { Template } from './module/templates/template.entity';
 import { User } from './module/users/user.entity';
 
@@ -23,7 +25,7 @@ export default new DataSource({
   username: configService.get('DB_USER'),
   password: configService.get('DB_PASS'),
   database: configService.get('DB_NAME'),
-  entities: [User, Template, Plan],
+  entities: [User, Template, Plan, Subscription],
   migrations: [
     CreateUserTable1678998040775,
     CreateTemplateTable1678998082380,
@@ -32,5 +34,6 @@ export default new DataSource({
     UpdateTemplateTable1680093087191,
     CreatePlanTable1680827223545,
     UpdatePlanTable1680828046085,
+    CreateSubscriptionTable1680860268374,
   ],
 });

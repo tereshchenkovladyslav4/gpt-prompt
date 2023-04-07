@@ -49,7 +49,7 @@
 
               <ng-container *ngIf="authService.isAuthenticated(); else notAuthenticated">
                 <mat-menu #userMenu="matMenu">
-                  <button routerLink="/account" mat-menu-item>Account Information</button>
+                  <button routerLink="/pricing" mat-menu-item>Pricing</button>
                   <button (click)="logout()" mat-menu-item>Logout</button>
                 </mat-menu>
                 <button
