@@ -16,8 +16,19 @@
     border-top: 6px solid green;
   }
 
+  ul.list-price {
+    li {
+      line-height: 24px;
+    }
+  }
+
   h3 {
     font-size: 32px;
+    font-weight: bold;
+  }
+
+  h5 {
+    font-size: 24px;
     font-weight: bold;
   }
 }
