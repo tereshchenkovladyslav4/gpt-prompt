@@ -6,6 +6,7 @@ import * as process from 'process';
 import { User } from './user.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { BillingMethod } from '../billing-method/billing-method.entity';
 import { Plan } from '../plan/plan.entity';
 import { Subscription } from '../subscription/subscription.entity';
 
@@ -13,7 +14,7 @@ config();
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Plan, Subscription]),
+    TypeOrmModule.forFeature([User, Plan, Subscription, BillingMethod]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1d' },

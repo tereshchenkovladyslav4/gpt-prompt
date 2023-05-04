@@ -29,7 +29,10 @@ import { environment } from '@env/environment';
     MatSidenavModule,
     MatToolbarModule,
     PerfectScrollbarModule,
-    NgxStripeSubscriptionModule.forRoot({ apiURL: environment.apiURL }),
+    NgxStripeSubscriptionModule.forRoot({
+      apiURL: environment.apiURL,
+      STRIPE_PUBLIC_KEY: environment.STRIPE_PUBLIC_KEY,
+    }),
   ],
   providers: [
     {

@@ -1,4 +1,5 @@
 import { PlanPeriod, PaymentStatus, SubscriptionStatus } from '../../enums';
+import { BillingMethod } from '../billing-method/billing-method.model';
 
 export interface Subscription {
   id: number;
@@ -7,4 +8,5 @@ export interface Subscription {
   billingSchema: PlanPeriod;
   status: SubscriptionStatus;
   paymentStatus: PaymentStatus;
+  billingMethod: BillingMethod;
 }

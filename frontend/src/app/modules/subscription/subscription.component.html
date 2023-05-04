@@ -1,5 +1,6 @@
 <ngx-stripe-subscription-pricing
   [authenticated]="authService.isAuthenticated()"
+  [hasBillingMethod]="authService.isAuthenticated() && !!authService.getUser()?.billingMethod"
   [subscription]="authService.getUser()?.subscription"
   (onSubscribed)="handleSubscribed($event)"
 ></ngx-stripe-subscription-pricing>

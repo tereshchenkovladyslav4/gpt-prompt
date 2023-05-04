@@ -6,4 +6,5 @@ export const NGX_STRIPE_SUBSCRIPTION_CONFIG = new InjectionToken<NgxStripeSubscr
 
 export interface NgxStripeSubscriptionConfig {
   apiURL: string;
+  STRIPE_PUBLIC_KEY: string;
 }

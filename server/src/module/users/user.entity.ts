@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { BillingMethod } from '../billing-method/billing-method.entity';
 import { Subscription } from '../subscription/subscription.entity';
 import { Template } from '../templates/template.entity';
 
@@ -28,4 +29,7 @@ export class User {
 
   @OneToMany(() => Subscription, (subscription) => subscription.user)
   subscriptions: Subscription[];
+
+  @OneToMany(() => BillingMethod, (billingMethod) => billingMethod.user)
+  billingMethods: BillingMethod[];
 }

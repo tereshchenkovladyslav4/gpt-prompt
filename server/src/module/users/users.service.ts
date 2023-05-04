@@ -7,6 +7,7 @@ import * as crypto from 'crypto';
 import * as process from 'process';
 import { CreateUserDto } from './dto/createUser.dto';
 import { User } from './user.entity';
+import { BillingMethod } from '../billing-method/billing-method.entity';
 import { Plan } from '../plan/plan.entity';
 import { RequestSubscriptionDto } from '../subscription/dto/request-subscription.dto';
 import { Subscription } from '../subscription/subscription.entity';
@@ -20,6 +21,8 @@ export class UsersService {
     private plansRepository: Repository<Plan>,
     @InjectRepository(Subscription)
     private subscriptionsRepository: Repository<Subscription>,
+    @InjectRepository(BillingMethod)
+    private billingMethodsRepository: Repository<BillingMethod>,
     private jwtService: JwtService,
   ) {}
 
@@ -59,7 +62,12 @@ export class UsersService {
       .orderBy('id', 'DESC')
       .getOne();
 
-    const payload = { user: { ...user, subscription: subscription } };
+    const billingMethod = await this.billingMethodsRepository
+      .createQueryBuilder('BillingMethod')
+      .where({ userId: user.id })
+      .getOne();
+
+    const payload = { user: { ...user, subscription: subscription, billingMethod: billingMethod } };
     return this.jwtService.sign(payload, { expiresIn: '1 day' });
   }
 

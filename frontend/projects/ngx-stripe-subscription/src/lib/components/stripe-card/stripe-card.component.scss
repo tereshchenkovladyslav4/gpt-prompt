@@ -1,0 +1,48 @@
+.input-wrapper {
+  padding: 6px 0;
+  border: solid 1px rgba(0, 0, 0, 0.38);
+  border-radius: 4px;
+}
+
+.billing-method {
+  &__title {
+    margin-bottom: 10px;
+    line-height: 1.33;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  &__text {
+    max-width: 265px;
+    margin-bottom: 30px;
+    line-height: 1.43;
+  }
+
+  &__item {
+    flex: 1;
+  }
+}
+
+.detect-card {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+.StripeElement {
+  width: 100%;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 400;
+  border-radius: var(--elem-radius);
+  color: var(--input-color);
+  background-color: var(--elem-color-bg);
+  border: var(--elem-border) solid var(--elem-color-border);
+  line-height: calc(var(--elem-height) - var(--elem-border) * 2);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.StripeElement input {
+  color: var(--input-color) !important;
+}

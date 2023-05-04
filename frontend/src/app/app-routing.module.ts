@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from '@components';
-import { PricingComponent } from 'ngx-stripe-subscription';
 
 const routes: Routes = [
   {

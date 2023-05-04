@@ -1,4 +1,4 @@
-import { Subscription } from 'ngx-stripe-subscription';
+import { BillingMethod, Subscription } from 'ngx-stripe-subscription';
 
 export interface UserInfo {
   id: number;
@@ -8,4 +8,5 @@ export interface UserInfo {
   profilePicture: string;
   active: boolean;
   subscription: Subscription;
+  billingMethod: BillingMethod;
 }
