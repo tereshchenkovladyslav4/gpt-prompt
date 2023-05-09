@@ -97,10 +97,17 @@ export class UsersService {
         throw new HttpException(`You don't have any active payment methods`, HttpStatus.INTERNAL_SERVER_ERROR);
       }
 
-      const stripeSubscription = await this.stripe.subscriptions.create({
+      const subscriptionRequest: Stripe.SubscriptionCreateParams = {
         customer: paymentMethod.customerId,
         items: [{ plan: plan.stripePlanId }],
-      });
+        expand: ['latest_invoice.payment_intent'],
+      };
+
+      if (vatAmount > 0) {
+        subscriptionRequest.default_tax_rates = [process.env.STRIPE_VAT_TAX_ID];
+      }
+
+      const stripeSubscription = await this.stripe.subscriptions.create(subscriptionRequest);
 
       const { status: stripeSubscriptionStatus } = stripeSubscription;
 
