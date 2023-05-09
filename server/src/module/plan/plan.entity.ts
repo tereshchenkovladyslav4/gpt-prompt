@@ -22,6 +22,9 @@ export class Plan {
   @Column({ nullable: true })
   description: string;
 
+  @Column({ nullable: true })
+  stripePlanId: string;
+
   @Column({
     type: 'enum',
     enum: PlanPeriod,

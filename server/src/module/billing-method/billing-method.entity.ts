@@ -10,6 +10,9 @@ export class BillingMethod {
   @Column('int')
   userId: number;
 
+  @Column()
+  customerId: string;
+
   @Column({ nullable: true })
   name: string;
 

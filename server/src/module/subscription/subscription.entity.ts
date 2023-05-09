@@ -42,6 +42,12 @@ export class Subscription {
   })
   paymentStatus: PaymentStatus;
 
+  @Column({ nullable: true })
+  paymentError: string;
+
+  @Column({ nullable: true })
+  paymentErrorCode: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -32,7 +32,7 @@ export class PricingComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.subscription) {
+    if (this.subscription && this.subscription.billingSchema !== PlanPeriod.ALL) {
       this.period = this.subscription.billingSchema;
     }
     this.getPlans();

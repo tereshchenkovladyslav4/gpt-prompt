@@ -1,4 +1,5 @@
-import { IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDefined, IsNotEmptyObject, IsObject, IsString, ValidateNested } from 'class-validator';
 
 export class Address {
   @IsString()
@@ -47,5 +48,10 @@ export class BillingMethodDto {
   @IsString()
   paymentMethodToken: string;
 
+  @IsDefined()
+  @IsNotEmptyObject()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => Address)
   address: Address;
 }

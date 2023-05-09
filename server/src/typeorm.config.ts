@@ -10,6 +10,9 @@ import { CreatePlanTable1680827223545 } from './migration/1680827223545-CreatePl
 import { UpdatePlanTable1680828046085 } from './migration/1680828046085-UpdatePlanTable';
 import { CreateSubscriptionTable1680860268374 } from './migration/1680860268374-CreateSubscriptionTable';
 import { CreateBillingMethodTable1683232087178 } from './migration/1683232087178-CreateBillingMethodTable';
+import { UpdateSubscriptionTable1683316318470 } from './migration/1683316318470-UpdateSubscriptionTable';
+import { UpdateBillingMethodTable1683543329419 } from './migration/1683543329419-UpdateBillingMethodTable';
+import { UpdatePlanTable1683616723113 } from './migration/1683616723113-UpdatePlanTable';
 import { BillingMethod } from './module/billing-method/billing-method.entity';
 import { Plan } from './module/plan/plan.entity';
 import { Subscription } from './module/subscription/subscription.entity';
@@ -38,5 +41,8 @@ export default new DataSource({
     UpdatePlanTable1680828046085,
     CreateSubscriptionTable1680860268374,
     CreateBillingMethodTable1683232087178,
+    UpdateSubscriptionTable1683316318470,
+    UpdateBillingMethodTable1683543329419,
+    UpdatePlanTable1683616723113,
   ],
 });
