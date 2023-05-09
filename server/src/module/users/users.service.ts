@@ -84,6 +84,7 @@ export class UsersService {
     if (existingSubscription) {
       const cancelSubscriptionResult = await this.stripe.subscriptions.cancel(
         existingSubscription.stripeSubscriptionId,
+        { prorate: true },
       );
       if (cancelSubscriptionResult.status !== SubscriptionStatus.CANCELED) {
         throw new HttpException(`Failed to cancel the current subscription`, HttpStatus.INTERNAL_SERVER_ERROR);
