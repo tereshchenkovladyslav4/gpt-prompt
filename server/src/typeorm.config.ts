@@ -13,6 +13,8 @@ import { CreateBillingMethodTable1683232087178 } from './migration/1683232087178
 import { UpdateSubscriptionTable1683316318470 } from './migration/1683316318470-UpdateSubscriptionTable';
 import { UpdateBillingMethodTable1683543329419 } from './migration/1683543329419-UpdateBillingMethodTable';
 import { UpdatePlanTable1683616723113 } from './migration/1683616723113-UpdatePlanTable';
+import { UpdateSubscriptionTable1683624322660 } from './migration/1683624322660-UpdateSubscriptionTable';
+import { UpdateSubscriptionTable1683625481001 } from './migration/1683625481001-UpdateSubscriptionTable';
 import { BillingMethod } from './module/billing-method/billing-method.entity';
 import { Plan } from './module/plan/plan.entity';
 import { Subscription } from './module/subscription/subscription.entity';
@@ -44,5 +46,7 @@ export default new DataSource({
     UpdateSubscriptionTable1683316318470,
     UpdateBillingMethodTable1683543329419,
     UpdatePlanTable1683616723113,
+    UpdateSubscriptionTable1683624322660,
+    UpdateSubscriptionTable1683625481001,
   ],
 });

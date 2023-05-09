@@ -78,14 +78,18 @@ export class UsersService {
   async subscribe(data: RequestSubscriptionDto) {
     const { userId, planId } = data;
     const existingSubscription = await this.subscriptionsRepository.findOne({
-      where: { userId: userId, status: Not(SubscriptionStatus.CANCELLED) },
+      where: { userId: userId, status: Not(SubscriptionStatus.CANCELED) },
     });
 
     if (existingSubscription) {
-      await this.subscriptionsRepository.save({ ...existingSubscription, status: SubscriptionStatus.CANCELLED });
+      const cancelSubscriptionResult = await this.stripe.subscriptions.cancel(
+        existingSubscription.stripeSubscriptionId,
+      );
+      if (cancelSubscriptionResult.status !== SubscriptionStatus.CANCELED) {
+        throw new HttpException(`Failed to cancel the current subscription`, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      await this.subscriptionsRepository.save({ ...existingSubscription, status: SubscriptionStatus.CANCELED });
     }
-
-    const shouldResumeSubscription = !!existingSubscription;
 
     const plan = await this.plansRepository.findOne({ where: { id: planId } });
     const amount = plan.price;
@@ -107,9 +111,9 @@ export class UsersService {
         subscriptionRequest.default_tax_rates = [process.env.STRIPE_VAT_TAX_ID];
       }
 
-      const stripeSubscription = await this.stripe.subscriptions.create(subscriptionRequest);
+      const stripeSubscription: Stripe.Subscription = await this.stripe.subscriptions.create(subscriptionRequest);
 
-      const { status: stripeSubscriptionStatus } = stripeSubscription;
+      const { status: stripeSubscriptionStatus, id: stripeSubscriptionId } = stripeSubscription;
 
       if (
         stripeSubscriptionStatus !== SubscriptionStatus.ACTIVE &&
@@ -129,18 +133,30 @@ export class UsersService {
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
-    }
 
-    await this.subscriptionsRepository.save({
-      userId,
-      planId,
-      amount,
-      vatAmount,
-      billingSchema: plan.period,
-      status: SubscriptionStatus.ACTIVE,
-      paymentStatus: PaymentStatus.PAID,
-      paidAt: new Date(),
-    });
+      await this.subscriptionsRepository.save({
+        userId,
+        planId,
+        amount,
+        vatAmount,
+        billingSchema: plan.period,
+        status: SubscriptionStatus.ACTIVE,
+        paymentStatus: PaymentStatus.PAID,
+        paidAt: new Date(),
+        stripeSubscriptionId: stripeSubscriptionId,
+      });
+    } else {
+      await this.subscriptionsRepository.save({
+        userId,
+        planId,
+        amount,
+        vatAmount,
+        billingSchema: plan.period,
+        status: SubscriptionStatus.ACTIVE,
+        paymentStatus: PaymentStatus.PAID,
+        paidAt: new Date(),
+      });
+    }
 
     return await this.login(await this.read(userId));
   }

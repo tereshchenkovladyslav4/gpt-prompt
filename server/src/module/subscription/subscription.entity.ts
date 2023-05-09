@@ -15,6 +15,9 @@ export class Subscription {
   @Column('int')
   planId: number;
 
+  @Column({ nullable: true })
+  stripeSubscriptionId: string;
+
   @Column('int')
   amount: number;
 

@@ -12,7 +12,13 @@
     <li><img src="assets/icons/check.svg" class="img-fluid me-3" alt="" /> Duis aute deserunt velit</li>
   </ul>
   <h5 class="text-center mb-4">from ${{ (plan?.price || 0) / 100 | number : '0.2' }} / month</h5>
-  <button class="w-100" mat-raised-button color="primary" [disabled]="selected" (click)="handleSelectPlan(plan)">
+  <button
+    class="w-100"
+    mat-raised-button
+    color="primary"
+    [disabled]="selected || disableBtn"
+    (click)="handleSelectPlan(plan)"
+  >
     Choose the {{ plan?.name }} Plan
   </button>
 </div>

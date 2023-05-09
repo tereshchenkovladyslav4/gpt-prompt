@@ -19,6 +19,7 @@
             <lib-price-card
               [plan]="plan"
               [selected]="subscription?.planId === plan.id"
+              [disableBtn]="submitted"
               (onChangePlan)="handleSelectPlan($event)"
             ></lib-price-card>
           </div>

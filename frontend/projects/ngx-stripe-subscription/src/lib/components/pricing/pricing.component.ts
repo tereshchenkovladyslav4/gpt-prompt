@@ -22,6 +22,7 @@ export class PricingComponent implements OnInit {
   period: PlanPeriod = PlanPeriod.MONTHLY;
   plans: Plan[] = [];
   selectedPlan: Plan | undefined;
+  submitted = false;
 
   constructor(
     private planService: PlanService,
@@ -61,7 +62,9 @@ export class PricingComponent implements OnInit {
       return;
     }
     if (this.authenticated) {
+      this.submitted = true;
       this.subscriptionService.requestSubscription(this.selectedPlan.id).subscribe((res) => {
+        this.submitted = false;
         if (!res.success) {
           this.snackBar.open(res.message?.[0] || '', 'Dismiss', { duration: 4000 });
           return;

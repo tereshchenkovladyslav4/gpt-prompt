@@ -9,6 +9,7 @@ import { Plan } from '../../../core/models';
 export class PriceCardComponent {
   @Input('plan') plan: Plan | undefined;
   @Input('selected') selected: boolean = false;
+  @Input('disableBtn') disableBtn: boolean = false;
   @Output() onChangePlan: EventEmitter<Plan> = new EventEmitter<Plan>();
 
   handleSelectPlan(plan: Plan | undefined) {
